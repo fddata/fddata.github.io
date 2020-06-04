@@ -4,11 +4,14 @@ title: About Me
 permalink: /about/
 ---
 
-Hello and welcome to my GitHub Pages site.  Here I plan to document my journey through the intensive 16 week coding course at Codeclan here in Glasgow, my first forays into the world of tech (hopefully!), and occasional posts about the projects I've been working on.  As I find that I learn best by explaining things to people there will probably be some simple tutorials about subjects I've struggled with.
+Hello and welcome to my GitHub Pages site.
+Here I plan to document some of the projects I've been working on and hopefully inspire some people to get out there and try make something themselves!
+At the moment I'm interested in data science, chemoinformatics and game design with Unity.  
 
-### More Information
+As I find that I learn best by explaining things to people there will probably be some simple tutorials about subjects I've struggled with.  
 
-I also have a sister site for my more creative hobbies, you can view my photography on [www.fraserdouglas.com](https://www.fraserdouglas.com)
+All content and opinions are my own shoddy work :)
+
 
 ### Contact me
 
