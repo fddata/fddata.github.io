@@ -3,8 +3,10 @@
     "",
     "\\images",
     "\\images\\mull",
+    "\\_includes",
+    "\\_layouts",
     "\\_posts"
   ],
-  "SelectedNode": "\\images\\mull\\knn_accuracy.png",
+  "SelectedNode": "\\_layouts\\default.html",
   "PreviewInSolutionExplorer": false
 }
