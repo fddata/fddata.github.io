@@ -42,7 +42,7 @@ For this post we will be plotting data from two sources on the same plot - the m
 There are a number of different ways to visualise geospatial data in Python.
 For this example I decided to use the PyShp package to read in the files I obtained from the UK Government website, in part due to the [excellent documentation](https://pypi.org/project/pyshp/){:target="_blank"}.
 The shapefile data is provided in a zip file containing the .shp file itself and a few support files.
-To read the file we pass its location to the Shapefile package like so:
+To read the file we pass its location to the PyShp package like so:
 
 ```python
 import shapefile as shp
@@ -110,7 +110,7 @@ print regions
 ```
 
 Now we know what the 12 regions are we can have a look at attempting to visualise the different regions.
-We know that each  region has a 'shape' property in addition to the 'record' part that we have already examined.
+From the documentation we know that each  region has a 'shape' property in addition to the 'record' part that we have already examined.
 This 'shape' property itself contains the following parameters
  - ``bbox`` -  coordinates for the bounding box
  - ``parts`` - a list of indexes for the different parts (the indexes refer to the list of ``points`` below)
@@ -124,13 +124,43 @@ For each of these parts, we will take the relevant number of x,y coordinates fro
 In code, this looks like:
 
 ```python
+for record in sf.shapeRecords():
+    #uncomment out the two below lines to add conditional region plotting
+    #if record.record['nuts118nm'] != 'Scotland':   
+    #    continue
+    num_parts = len(record.shape.parts)
+    for i in range(num_parts):
+        i_start = record.shape.parts[i]
+        if i == (num_parts - 1):
+            i_end = len(record.shape.points)
+        else:
+            i_end = record.shape.parts[i + 1]
+        x = [i[0]  for i in record.shape.points[i_start:i_end]] 
+        y = [i[1]  for i in record.shape.points[i_start:i_end]]
+        plt.plot(x,y)
 
+#plot axis options etc
+plt.xlim(0,700000)
+plt.ylim(0, 1250000)
+plt.rcParams["figure.figsize"] = (7/7, 12.5/7 )    # so each northing/easting has the same scale   
+plt.xlabel('Eastings')
+plt.xticks(rotation=90) 
+plt.ylabel('Northings') 
+plt.show()
 
 ``` 
 
+which gives:
+
+![The full plot of the UK Shapefile](../images/munro/UK_full.png "The full plot of the UK Shapefile")
+
+We can see each part of each region has been given a different colour by default, which I think looks pretty cool!
+It is worth noting that the shapefile did not provide lat/long coordinates, but rather Eastings/Northings as per the Ordenance Survey grid system.
+Hopefully this won't prove problematic when we are looking to overlay the munro data. Lets find out...
+
 ### Getting the Munro data
 
-Getting the Munro data should be straightforward.  We can use the excellent Pandas build our dataframe directly from the API query:
+Getting the Munro data should be straightforward.  We can use Pandas to build our dataframe directly from the API query:
 
 ```python
 import pandas as pd    
@@ -183,7 +213,7 @@ len(df.region.value_counts())
 #returns 17
 ```
 This is great, we have 17 distinct regions with varied population sizes for each.  In order to plot these on our map we need to know their positions.
-As we saw previously the UK map is provided as
+As we saw previously the UK map is provided in terms of Eastings and Northings, which correspond to x,y points on an OS map.
 
 
 ### Putting it all together
