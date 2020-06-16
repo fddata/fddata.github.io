@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\images",
-    "\\images\\mull",
+    "\\images\\munro",
+    "\\_includes",
+    "\\_layouts",
     "\\_posts"
   ],
-  "SelectedNode": "\\images\\mull\\knn_accuracy.png",
+  "SelectedNode": "\\images\\munro",
   "PreviewInSolutionExplorer": false
 }
