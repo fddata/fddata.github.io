@@ -5,9 +5,11 @@ description: Exploring Scotland's 3,000ft+ hills
 tags: python scikit learn data science scotland mountains munros
 ---
 
-Note: the scripts relating to this post can be found on my [GitHub](https://github.com/fddata/explore_munros){:target="_blank"}.
 
-## Introduction 
+
+## Part 1 - Introduction / Getting the Data
+
+(Note: the scripts relating to this post can be found on my personal [Github page](https://github.com/fddata/explore_munros){:target="_blank"}.)
 
 For this post I wanted to try working with some Geographic data in Python, as well as look for an opportunity to expand on the [Machine Learning example]({% post_url 2020-03-24-mull_cycle_1 %}){:target="_blank"} I did in my last post. 
 
@@ -19,11 +21,6 @@ As the Munros are spread across the land, they can be grouped into distinct regi
 
 Nowadays the location of each of the summit is well documented, with many [online resources](https://www.walkhighlands.co.uk/){:target="_blank"} available to help you plan a route and record how many you still have left to climb.  There is also an excellent machine-readable resource (shoutout to [John Easton](https://twitter.com/johneas10){:target="_blank"} for the excellent [Munro API](https://munroapi.herokuapp.com/){:target="_blank"}) where we can access information for all the Munros in JSON format.  Spending quarantine poring over maps of the highlands made me want to have a go at plotting my own map data in Python, something I have often thought about doing but never had the time. Every silver cloud etc...   To handle the mapping of the country outlines I will be attempting to read the publicly available Eurostat boundaries available on the UK government's [Open Geography portal](https://geoportal.statistics.gov.uk/datasets/nuts-level-1-january-2018-full-clipped-boundaries-in-the-united-kingdom){:target="_blank"}.
 
-
-
-
-
-## Part 1 - Getting the Data
 
 For this post we will be plotting data from two sources on the same plot - the map outline data (from a shapefile, more on this below) and the Munro data (from the Munro API).  Let's look at each in turn before we bring them together.
 
@@ -138,7 +135,7 @@ which gives:
 
 ![The full plot of the UK Shapefile](../images/munro/UK_full.png "The full plot of the UK Shapefile")
 
-We can see each part of each region has been given a different colour by default, which I think looks pretty cool! It is worth noting that the shapefile did not provide lat/long coordinates, but rather eastings/northings as per the [Ordnance Survey grid system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid){:target="_blank"}. Hopefully this won't prove problematic when we are looking to overlay the Munro data. Lets find out...
+We can see each part of each region has been given a different colour by default, which I think looks pretty cool! It is worth noting that the shapefile did not provide lat/long coordinates, but rather eastings/northings as per the [Ordnance Survey (OS) grid system](https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid){:target="_blank"}. Hopefully this won't prove problematic when we are looking to overlay the Munro data. Lets find out...
 
 ### Getting the Munro data
 
@@ -166,7 +163,7 @@ print df.count()
 #smcid                282
 ```
 
-We have a variety of data here, relating to latitude and longitude, as well as the British Ordinance Survey grid reference and letters, names, meanings and regions.  There are 282 values for each column, meaning we do not have to worry about null values.
+We have a variety of data here, relating to latitude and longitude, as well as the British Ordnance Survey grid reference and letters, names, meanings and regions.  There are 282 values for each column, meaning we do not have to worry about null values.
 
 What are the different regions?
 ```python
@@ -194,7 +191,7 @@ Loch Broom to the Pentland Firth         4
 len(df.region.value_counts())
 #returns 17
 ```
-This is great, we have 17 distinct regions with varied population sizes for each.  In order to plot these on our map we need to know their positions. As we saw previously, the UK map is provided in terms of eastings and northings.  In the UK, eastings and northings on OS maps are used to define positions within Great Britain. They take the format of two letters which describe a [500 $\times$ 500 km grid](https://en.wikipedia.org/wiki/File:British_National_Grid.svg){:target="_blank"}. Following the two letters are an even number of digits, the first half of which describe the Eastern position within the letter square, the second half of which describe the Northern position. The number of digits relates to the granularity of the position, with more digits equating to a smaller and smaller area.
+This is great, we have 17 distinct regions with varied population sizes for each.  In order to plot these on our map we need to know their positions. As we saw previously, the UK map is provided in terms of eastings and northings.  In the UK, eastings and northings on OS maps are used to define positions within Great Britain. They take the format of two letters which describe a [500 by 500 km grid](https://en.wikipedia.org/wiki/File:British_National_Grid.svg){:target="_blank"}. Following the two letters are an even number of digits, the first half of which describe the Eastern position within the letter square, the second half of which describe the Northern position. The number of digits relates to the granularity of the position, with more digits equating to a smaller and smaller area.
 
 The Munro API provides the letters, eastings and northings for each Munro:
 
@@ -213,7 +210,7 @@ df.gridref_letters.unique()
 #returns array([u'NN', u'NJ', u'NH', u'NO', u'NG', u'NM', u'NC'], dtype=object)
 ```
 
-Thankfully there are only 7 unique values to deal with here. We can refer to the OS Grid System map to work out what they need to be.  To update our dataframe I will write a couple of helper functions to generate the full eastings and northings coordinates to match the system used in our outline map:
+Thankfully there are only 7 unique values to deal with here. We can refer to the [OS Grid System map](https://en.wikipedia.org/wiki/File:British_National_Grid.svg){:target="_blank"} to work out what they need to be.  To update our dataframe I will write a couple of helper functions to generate the full eastings and northings coordinates to match the system used in our outline map:
 
 ```python
 #store grid letters in a dictionary
@@ -251,4 +248,4 @@ Or I can restrict the plot only to the ``Scotland`` shapefile region, adjust the
 
 Which is just the plot I was looking for to end Part 1 of this series on.  For Part 2 I will be looking at how to build a model to help us predict which region a Munro belongs to, based on its eastings and northings values.  As we have a few closely-knit regions here it could be quite a challenge!
 
-Note: the scripts relating to this post can be found on my [GitHub](https://github.com/fddata/explore_munros){:target="_blank"}.
+(Note: the scripts relating to this post can be found on my personal [Github page](https://github.com/fddata/explore_munros){:target="_blank"}.)
